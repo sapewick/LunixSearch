@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados del Escaneo</title>
+    <title>Escaneo de Red - LUNIXSEARCH</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
     <style>
         body {
@@ -14,27 +14,50 @@
         }
         h1 {
             color: #343a40;
+            margin-bottom: 20px;
         }
         .table {
+            margin-top: 20px;
+        }
+        .alert {
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Resultados del Escaneo</h1>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">LUNIXSEARCH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/scan">Escanear</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/devices">Dispositivos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/history">Historial de Escaneos</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        <form method="GET" action="/scan">
+    <div class="container">
+        <h1>Escanear Red</h1>
+
+        <!-- Formulario para el escaneo -->
+        <form method="GET" action="/scan" class="mb-4">
             <div class="mb-3">
                 <label for="ip_range" class="form-label">Rango de IPs a escanear:</label>
                 <input type="text" class="form-control" id="ip_range" name="ip_range" placeholder="Ej: 192.168.0.0/24" required>
             </div>
-            <button type="submit" class="btn btn-primary">Escanear</button>
+            <button type="submit" class="btn btn-primary">Iniciar Escaneo</button>
         </form>
 
+        <!-- Tabla de resultados del escaneo -->
         {% if devices %}
         <table class="table table-bordered table-hover">
-            <thead>
+            <thead class="thead-dark">
                 <tr>
                     <th>Dirección IP</th>
                     <th>Puerto</th>
@@ -56,8 +79,16 @@
             No se encontraron dispositivos en el rango especificado.
         </div>
         {% endif %}
+
+        <!-- Botones de navegación -->
+        <div class="mt-4">
+            <a href="/devices" class="btn btn-info">Ver Dispositivos</a>
+            <a href="/scan" class="btn btn-secondary">Nuevo Escaneo</a>
+            <a href="/history" class="btn btn-success">Ver Historial</a>
+        </div>
     </div>
 
+    <!-- Scripts de Bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

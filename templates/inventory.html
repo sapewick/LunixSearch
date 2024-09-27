@@ -4,16 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario de Dispositivos - LUNIXSEARCH</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h2 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .navbar-brand {
+            margin-left: auto; /* Alinea la marca a la derecha */
+            margin-right: 30px; /* Espacio adicional a la derecha */
+        }
+    </style>
 </head>
 <body>
+    <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">LUNIXSEARCH</a>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">LUNIXSEARCH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/scan">Escanear</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/devices">Dispositivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/history">Historial de Escaneos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container">
         <h2>Inventario de Dispositivos</h2>
-        <form action="/inventory/add" method="POST">
+
+        <!-- Formulario para agregar un nuevo dispositivo -->
+        <form action="/inventory/add" method="POST" class="mb-4">
             <div class="form-group">
                 <label for="device_name">Nombre del Dispositivo:</label>
                 <input type="text" class="form-control" name="device_name" id="device_name" required>
@@ -29,10 +69,44 @@
             <button type="submit" class="btn btn-primary">Agregar Dispositivo</button>
         </form>
 
-        <table class="table mt-4">
-            <thead>
+        <!-- Tabla de dispositivos en el inventario -->
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
                 <tr>
                     <th>#</th>
                     <th>Nombre del Dispositivo</th>
                     <th>Tipo de Dispositivo</th>
-                    <th
+                    <th>Ubicación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in inventory %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ device.device_name }}</td>
+                    <td>{{ device.device_type }}</td>
+                    <td>{{ device.location }}</td>
+                    <td>
+                        <a href="/inventory/edit/{{ device.id }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete({{ device.id }})">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="/scan" class="btn btn-secondary">Volver a Escanear</a>
+    </div>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmDelete(deviceId) {
+            if (confirm('¿Estás seguro de que deseas eliminar este dispositivo?')) {
+                window.location.href = '/inventory/delete/' + deviceId; // Ajusta la URL según sea necesario
+            }
+        }
+    </script>
+</body>
+</html>

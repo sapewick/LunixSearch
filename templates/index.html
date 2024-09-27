@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUNIXSEARCH</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>LUNIXSEARCH - Inicio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
         body {
             background-color: #f8f9fa;
@@ -13,8 +13,12 @@
         }
         .header {
             text-align: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #343a40;
+            margin-right: 20px;
         }
         .main-content {
             margin-top: 30px;
@@ -26,62 +30,80 @@
             border: 1px solid #ced4da;
             border-radius: 5px;
             background-color: #ffffff;
+            transition: box-shadow 0.3s;
+        }
+        .feature-box:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         .feature-box h4 {
             margin-bottom: 15px;
+            color: #495057;
         }
         .feature-box p {
             color: #6c757d;
         }
+        .btn-primary, .btn-secondary, .btn-info {
+            margin-top: 15px;
+        }
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
+    <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">LUNIXSEARCH</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="/devices">Dispositivos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#scanModal">Escanear</a></li>
-                <li class="nav-item"><a class="nav-link" href="/scan/history">Historial de Escaneos</a></li>
+                <li class="nav-item"><a class="nav-link" href="/inventory">Dispositivos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#scanModal">Escanear</a></li>
+                <li class="nav-item"><a class="nav-link" href="/history">Historial de Escaneos</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Contenido Principal -->
     <div class="container">
         <div class="header">
             <h1>Bienvenido a LUNIXSEARCH</h1>
-            <p>Escanea tu red y gestiona tus dispositivos de manera eficiente.</p>
+            <p class="lead">Escanea tu red y gestiona tus dispositivos de manera eficiente.</p>
         </div>
-        
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="alert alert-info">
-              {{ messages[0] }}
-            </div>
-          {% endif %}
-        {% endwith %}
 
         <div class="main-content">
             <h2>¿Qué deseas hacer?</h2>
-            <p>Utiliza el menú de navegación para escanear tu red o ver los dispositivos detectados.</p>
+            <p class="mb-4">Utiliza el menú de navegación para escanear tu red o ver los dispositivos detectados.</p>
 
-            <div class="feature-box">
-                <h4>Escanear Red</h4>
-                <p>Ingresa un rango de IP para escanear y detectar dispositivos conectados.</p>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#scanModal">Iniciar Escaneo</button>
-            </div>
+            <!-- Caja de funciones -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>Escanear Red</h4>
+                        <p>Ingresa un rango de IP para escanear y detectar dispositivos conectados.</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scanModal">Iniciar Escaneo</button>
+                    </div>
+                </div>
 
-            <div class="feature-box">
-                <h4>Ver Dispositivos</h4>
-                <p>Accede a la lista de dispositivos detectados en tu red.</p>
-                <a href="/devices" class="btn btn-secondary">Ver Dispositivos</a>
-            </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>Ver Dispositivos</h4>
+                        <p>Accede a la lista de dispositivos detectados en tu red.</p>
+                        <a href="/inventory" class="btn btn-secondary">Ver Dispositivos</a>
+                    </div>
+                </div>
 
-            <div class="feature-box">
-                <h4>Historial de Escaneos</h4>
-                <p>Consulta el historial de escaneos realizados.</p>
-                <a href="/scan/history" class="btn btn-info">Ver Historial</a>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h4>Historial de Escaneos</h4>
+                        <p>Consulta el historial de escaneos realizados.</p>
+                        <a href="/history" class="btn btn-info">Ver Historial</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -93,9 +115,7 @@
                 <form action="/scan" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title" id="scanModalLabel">Escanear Red</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -104,7 +124,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Escanear</button>
                     </div>
                 </form>
@@ -112,8 +132,9 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Scripts de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

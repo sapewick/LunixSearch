@@ -3,33 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados del Escaneo</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Resultados del Escaneo - LUNIXSEARCH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h1 {
+            color: #343a40;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .navbar-nav {
+            margin-left: auto;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">LUNIXSEARCH</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/scan">Escanear</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/devices">Dispositivos</a>
-                </li>
-            </ul>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">LUNIXSEARCH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/scan">Escanear</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/devices">Dispositivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/history">Historial de Escaneos</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-    <div class="container">
-        <h1 class="mt-5">Resultados del Escaneo</h1>
-        <p>El escaneo se ha completado. Puedes ver los dispositivos <a href="/devices">aquí</a>.</p>
-        <a href="/scan" class="btn btn-primary">Volver a Escanear</a>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Resultados del Escaneo</h1>
+        <p>El escaneo se ha completado. Aquí tienes la lista de dispositivos encontrados:</p>
+        
+        <div id="device-list">
+            {% if devices %}
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Dirección IP</th>
+                            <th>Puerto</th>
+                            <th>Servicio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in devices %}
+                            <tr>
+                                <td>{{ device.ip_address }}</td>
+                                <td>{{ device.port }}</td>
+                                <td>{{ device.service }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    No se encontraron dispositivos en el rango especificado.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            <a href="/scan" class="btn btn-primary">Volver a Escanear</a>
+            <a href="/devices" class="btn btn-secondary">Ver Dispositivos</a>
+            <a href="/history" class="btn btn-info">Ver Historial de Escaneos</a>
+        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function updateDeviceList(devices) {
+            const deviceList = document.getElementById('device-list');
+            if (devices.length > 0) {
+                let tableContent = `<table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Dirección IP</th>
+                            <th>Puerto</th>
+                            <th>Servicio</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                devices.forEach(device => {
+                    tableContent += `<tr>
+                        <td>${device.ip_address}</td>
+                        <td>${device.port}</td>
+                        <td>${device.service}</td>
+                    </tr>`;
+                });
+                tableContent += `</tbody></table>`;
+                deviceList.innerHTML = tableContent;
+            } else {
+                deviceList.innerHTML = `<div class="alert alert-warning" role="alert">
+                    No se encontraron dispositivos en el rango especificado.
+                </div>`;
+            }
+        }
+    </script>
 </body>
 </html>
