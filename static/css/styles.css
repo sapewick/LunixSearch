@@ -1,0 +1,29 @@
+body {
+    background-color: #f8f9fa; /* Color de fondo claro */
+    font-family: Arial, sans-serif; /* Fuente para el texto */
+}
+
+h1 {
+    color: #343a40; /* Color del encabezado principal */
+}
+
+.container {
+    margin-top: 20px; /* Margen superior para el contenedor */
+}
+
+.table {
+    background-color: white; /* Fondo blanco para la tabla */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.table th, .table td {
+    vertical-align: middle; /* Alineación vertical en celdas */
+}
+
+.btn {
+    margin-top: 10px; /* Espaciado superior para los botones */
+}
+
+hr {
+    border-top: 1px solid #ced4da; /* Color del separador */
+}

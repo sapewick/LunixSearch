@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados del Escaneo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h1 {
+            color: #343a40;
+        }
+        .table {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados del Escaneo</h1>
+
+        <form method="GET" action="/scan">
+            <div class="mb-3">
+                <label for="ip_range" class="form-label">Rango de IPs a escanear:</label>
+                <input type="text" class="form-control" id="ip_range" name="ip_range" placeholder="Ej: 192.168.0.0/24" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Escanear</button>
+        </form>
+
+        {% if devices %}
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Dirección IP</th>
+                    <th>Puerto</th>
+                    <th>Servicio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in devices %}
+                <tr>
+                    <td>{{ device.ip_address }}</td>
+                    <td>{{ device.port }}</td>
+                    <td>{{ device.service }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+            No se encontraron dispositivos en el rango especificado.
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
