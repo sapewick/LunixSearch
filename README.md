@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Este es un proyecto Flask para escanear redes y descubrir dispositivos utilizando nmap. Los resultados se almacenan en una base de datos y se pueden visualizar a través de una interfaz web.
+Este es un proyecto Flask para escanear redes y descubrir dispositivos utilizando nmap y rust. Los resultados se almacenan en una base de datos y se pueden visualizar a través de una interfaz web.
 
 ## Instalación
 
